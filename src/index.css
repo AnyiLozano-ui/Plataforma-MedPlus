@@ -1,0 +1,477 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background: #000;
+	color: #f9fafb;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+		sans-serif;
+}
+
+/* Fondo base negro */
+.nc-bg {
+	position: relative;
+	min-height: 100vh;
+	background: #000;
+	overflow: hidden;
+}
+
+/* ===========================
+   PLANOS EN PERSPECTIVA
+   =========================== */
+
+.nc-plane {
+	position: absolute;
+	left: -45%;
+	right: -45%;
+	height: 110%;
+	background-image: radial-gradient(
+		circle,
+		rgba(255, 255, 255, 0.55) 1.2px,
+		transparent 1.2px
+	);
+	background-size: 26px 26px;
+	opacity: 0.28;
+	filter: blur(0.25px);
+	pointer-events: none;
+	z-index: 0;
+}
+
+/* ===========================
+   ANIMACIÓN DE LAS BOLITAS
+   =========================== */
+
+/* movimiento suave tipo parallax + respiración */
+@keyframes planeDriftBottom {
+	0% {
+		transform: perspective(1000px) rotateX(72deg) translateY(0) scale(1);
+		background-position: 0 0;
+		opacity: 0.22;
+	}
+	100% {
+		transform: perspective(1000px) rotateX(72deg) translateY(18px)
+			scale(1.03);
+		background-position: 40px 40px;
+		opacity: 0.3;
+	}
+}
+
+@keyframes planeDriftTop {
+	0% {
+		transform: perspective(1000px) rotateX(-72deg) translateY(0) scale(1);
+		background-position: 0 0;
+		opacity: 0.22;
+	}
+	100% {
+		transform: perspective(1000px) rotateX(-72deg) translateY(-18px)
+			scale(1.03);
+		background-position: -40px -40px;
+		opacity: 0.3;
+	}
+}
+
+/* pequeño “twinkle” en la banda central */
+@keyframes middleTwinkle {
+	0%,
+	100% {
+		opacity: 0.14;
+	}
+	50% {
+		opacity: 0.22;
+	}
+}
+
+/* aplica las animaciones */
+.nc-plane-bottom {
+	bottom: -55%;
+	transform-origin: top center;
+	transform: perspective(1000px) rotateX(72deg);
+	animation: planeDriftBottom 12s ease-in-out infinite alternate;
+}
+
+.nc-plane-top {
+	top: -55%;
+	transform-origin: bottom center;
+	transform: perspective(1000px) rotateX(-72deg);
+	animation: planeDriftTop 12s ease-in-out infinite alternate;
+}
+
+.nc-middle {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 28%;
+	bottom: 28%;
+	background-color: #000;
+	background-image: radial-gradient(
+		circle,
+		rgba(255, 255, 255, 0.24) 1.1px,
+		transparent 1.1px
+	);
+	background-size: 30px 30px;
+	opacity: 0.16;
+	pointer-events: none;
+	z-index: 1;
+	animation: middleTwinkle 6s ease-in-out infinite;
+}
+
+/* ==========================
+   ANIMACIONES LANDING
+   ========================== */
+
+/* Logo: fade-in + pequeño zoom y subida */
+@keyframes logoEntrance {
+	0% {
+		opacity: 0;
+		transform: scale(0.9) translateY(16px);
+	}
+	100% {
+		opacity: 1;
+		transform: scale(1) translateY(0);
+	}
+}
+
+/* Botón / texto: fade-in hacia arriba */
+@keyframes itemEntrance {
+	0% {
+		opacity: 0;
+		transform: translateY(12px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* Aplica al logo */
+.logo-animate {
+	opacity: 0;
+	animation: logoEntrance 5s ease-out forwards;
+}
+
+/* Aplica al botón */
+.btn-animate {
+	opacity: 0;
+	animation: itemEntrance 5s ease-out forwards;
+	animation-delay: 0.25s;
+	/* efectos hover/active extra */
+	transform-origin: center;
+}
+
+.btn-animate:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.7), 0 0 18px rgba(255, 212, 56, 0.6);
+}
+
+.btn-animate:active {
+	transform: translateY(1px) scale(0.98);
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+}
+
+/* Aplica al texto “Dura 2 minutos” */
+.text-animate {
+	opacity: 0;
+	animation: itemEntrance 5s ease-out forwards;
+	animation-delay: 0.45s;
+}
+
+/* ===== CONTENEDOR GENERAL DE PREGUNTA ===== */
+
+@keyframes questionFadeSlide {
+	0% {
+		opacity: 0;
+		transform: translateY(14px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.question-container {
+	animation: questionFadeSlide 0.45s ease-out;
+	max-width: 52rem;
+	margin-left: clamp(1.5rem, 10vw, 5rem);
+}
+
+/* ===== TÍTULO + NÚMERO ===== */
+
+.question-label {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.6rem;
+	font-size: clamp(1.05rem, 2.1vw, 1.45rem);
+	line-height: 1.5;
+	color: #f9fafb;
+	font-weight: 400;
+}
+
+.question-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.65rem;
+    height: 1.7rem;
+    border-radius: 100%;
+    background: #ffffff;
+    color: #111827;
+    font-size: 0.7rem;
+    font-weight: 600;
+
+    /* FIXES IMPORTANTES */
+    margin: 0 0.5rem 0 0;       /* quita el % */
+    vertical-align: middle;     /* evita que suba/baje */
+    flex-shrink: 0;             /* evita que afecte el layout */
+}
+
+.question-help {
+	margin-top: 0.85rem;
+	font-size: 1.42rem;
+	color: #e5e7eb;
+}
+
+/* ===== BLOQUE INPUT + BOTÓN (BOTÓN DEBAJO) ===== */
+
+.field-block {
+	margin-top: 1.6rem;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 1.5rem;
+}
+
+/* ===== INPUTS TIPO LÍNEA ===== */
+
+.question-input,
+.question-textarea {
+	width: 38rem;
+	max-width: 100%;
+	border: none;
+	border-bottom: 1px solid rgba(249, 250, 251, 0.7);
+	background: transparent;
+	padding: 0.4rem 0;
+	font-size: 1.05rem;
+	color: #f9fafb;
+	outline: none;
+}
+
+.question-input::placeholder,
+.question-textarea::placeholder {
+	color: rgba(148, 163, 184, 0.9);
+}
+
+.question-input:focus,
+.question-textarea:focus {
+	border-color: #ffd438;
+}
+
+/* ===== BOTÓN PRINCIPAL ===== */
+
+.primary-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.6rem 2.2rem;
+	border-radius: 0.6rem;
+	background: #ffd438;
+	color: #000;
+	font-size: 0.95rem;
+	font-weight: 600;
+	border: none;
+	cursor: pointer;
+	box-shadow: 0 10px 22px rgba(0, 0, 0, 0.7);
+	transition: transform 0.16s ease-out, box-shadow 0.16s ease-out,
+		opacity 0.16s ease-out;
+}
+
+.primary-btn:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.75),
+		0 0 16px rgba(255, 212, 56, 0.55);
+}
+
+.primary-btn:active {
+	transform: translateY(1px) scale(0.98);
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.65);
+}
+
+.btn-disabled {
+	opacity: 0.4;
+	cursor: not-allowed;
+	box-shadow: none;
+	transform: none;
+}
+
+/* ===== ESTRELLAS CON NÚMEROS CENTRADOS ===== */
+
+.rating-row {
+	margin-top: 1.8rem;
+	display: flex;
+	gap: 2.4rem;
+	justify-content: flex-start;
+}
+
+.rating-item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.35rem;
+}
+
+.star-btn {
+	font-size: 2.2rem;
+	line-height: 1;
+	background: transparent;
+	border: none;
+	color: rgba(248, 250, 252, 0.55);
+	cursor: pointer;
+	transition: transform 0.15s ease-out, color 0.15s ease-out,
+		text-shadow 0.15s ease-out;
+}
+
+.star-btn:hover {
+	transform: translateY(-1px) scale(1.03);
+	color: rgba(252, 211, 77, 0.95);
+	text-shadow: 0 0 14px rgba(252, 211, 77, 0.75);
+}
+
+.star-btn--active {
+	color: #ffd438;
+	text-shadow: 0 0 16px rgba(255, 212, 56, 0.9);
+}
+
+.rating-label {
+	font-size: 0.9rem;
+	color: #e5e7eb;
+}
+
+/* ===== LISTA OPCIONES A–E ===== */
+
+.choice-list {
+	width: 38rem;
+	max-width: 100%;
+}
+
+.choice-row {
+	display: flex;
+	align-items: center;
+	gap: 0.9rem;
+	padding: 0.85rem 1.2rem;
+	border-radius: 0.9rem;
+	background: rgba(15, 23, 42, 0.96);
+	border: 1px solid rgba(148, 163, 184, 0.7);
+	font-size: 0.98rem;
+	color: #e5e7eb;
+	cursor: pointer;
+	transition: all 0.18s ease-out;
+}
+
+.choice-row::hover {
+	border-color: #ffd438;
+	transform: translateY(-1px);
+}
+
+.choice-badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.1rem;
+	height: 2.1rem;
+	border-radius: 999px;
+	background: transparent;
+	border: 2px solid rgba(229, 231, 235, 0.95);
+	font-size: 0.9rem;
+	font-weight: 600;
+}
+
+.choice-text {
+	flex: 1;
+}
+
+.choice-row--active {
+	background: rgba(15, 23, 42, 1);
+	border-color: #ffd438;
+	box-shadow: 0 10px 24px rgba(0, 0, 0, 0.75),
+		0 0 18px rgba(255, 212, 56, 0.7);
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 768px) {
+	.question-container {
+		margin-left: 1.5rem;
+		margin-right: 1.5rem;
+	}
+
+	.choice-list,
+	.question-input,
+	.question-textarea {
+		width: 100%;
+	}
+}
+
+/* Contenedor compacto (como la captura: columna angosta) */
+.choice-group--compact {
+	margin-top: 1.5rem;
+	max-width: 20rem;
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
+/* Variante compacta de la fila (menos padding que las grandes) */
+.choice-row--compact {
+	padding: 0.7rem 1rem;
+	border-radius: 0.6rem; /* menos pill, más “tarjeta” */
+	background: rgba(0, 0, 0, 0.75);
+	border-color: rgba(107, 114, 128, 0.8);
+}
+
+/* Badge cuadrado para la letra (A, B, C…) */
+.choice-badge--square {
+	width: 28px;
+	height: 28px;
+	border-radius: 0.45rem;
+	border-width: 1.5px;
+	font-size: 0.85rem;
+}
+
+/* Intro igual al diseño de referencia */
+
+.intro-block {
+	max-width: 780px; /* ancho de la columna de texto */
+	margin-left: 1.5rem;
+	margin-right: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+	.intro-block {
+		margin-left: 7rem; /* lo “corremos” un poco a la derecha en desktop */
+	}
+}
+
+.intro-text {
+	color: #f9fafb;
+	font-weight: 400;
+	/* tamaño parecido al de la imagen */
+	font-size: clamp(1.2rem, 1.2vw + 1rem, 1.7rem);
+	line-height: 1.5;
+}
+
+/* comilla amarilla grande, en su propia línea */
+.intro-quote-mark {
+	display: block;
+	font-size: clamp(2.5rem, 3vw + 1rem, 3.5rem);
+	line-height: 1;
+	color: #ffd438;
+	margin-bottom: 0.75rem;
+}
