@@ -140,41 +140,24 @@ export default function GalleryPage() {
 										type="button"
 										className="mt-auto flex items-center justify-center gap-2 bg-[#102845] text-[11px] font-semibold tracking-wide text-white uppercase py-2 hover:bg-[#1a3557] transition"
 										onClick={async () => {
-											try {
-												// 1. Descargar el recurso (imagen o video)
-												const response = await fetch(
-													item.src
+											console.log(item.src.split('/'))
+											const original = new URL(item.src)
+											const relativePath =
+												original.pathname.replace(
+													/^\//,
+													''
 												)
-												const blob =
-													await response.blob()
+											const downloadUrl = `https://medplus-survey-results-api.eml.com.co/api/download-media?path=${encodeURIComponent(
+												relativePath
+											)}`
 
-												// 2. Crear una URL temporal a partir del blob
-												const url =
-													URL.createObjectURL(blob)
-
-												// 3. Crear el enlace de descarga “invisible”
-												const link =
-													document.createElement('a')
-												link.href = url
-												// Usa la propiedad type si la tienes, si no, deja siempre jpg
-												const ext =
-													item.type === 'video'
-														? 'mp4'
-														: 'jpg'
-												link.download = `media-${item.id}.${ext}`
-
-												document.body.appendChild(link)
-												link.click()
-												document.body.removeChild(link)
-
-												// 4. Liberar la URL temporal
-												URL.revokeObjectURL(url)
-											} catch (err) {
-												console.error(
-													'Error descargando archivo:',
-													err
-												)
-											}
+											const link =
+												document.createElement('a')
+											link.href = downloadUrl
+											link.download = '' // el nombre lo fuerza el backend con Content-Disposition
+											document.body.appendChild(link)
+											link.click()
+											document.body.removeChild(link)
 										}}>
 										<svg
 											xmlns="http://www.w3.org/2000/svg"
