@@ -95,14 +95,14 @@ body {
 	bottom: -55%;
 	transform-origin: top center;
 	transform: perspective(1000px) rotateX(72deg);
-	animation: planeDriftBottom 12s ease-in-out infinite alternate;
+	animation: planeDriftBottom 8s ease-in-out infinite alternate;
 }
 
 .nc-plane-top {
 	top: -55%;
 	transform-origin: bottom center;
 	transform: perspective(1000px) rotateX(-72deg);
-	animation: planeDriftTop 12s ease-in-out infinite alternate;
+	animation: planeDriftTop 8s ease-in-out infinite alternate;
 }
 
 .nc-middle {

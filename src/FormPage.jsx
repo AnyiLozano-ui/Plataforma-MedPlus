@@ -315,7 +315,7 @@ export default function FormPage() {
 							<img
 								src="/images/logoem.png"
 								alt="Nariño Challenge 2025"
-								className="w-[320px] sm:w-[420px] md:w-[520px] max-w-full select-none"
+								className="w-[320px] sm:w-[420px] md:w-[300px] max-w-full select-none"
 							/>
 
 							<div className="space-y-2">
