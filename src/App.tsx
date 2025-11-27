@@ -1,8 +1,8 @@
 import React from 'react'
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom'
 
 export default function App() {
-	const navigate = useNavigate();
+	const navigate = useNavigate()
 	return (
 		<div className="nc-bg">
 			{/* Fondo de puntos */}
@@ -21,16 +21,21 @@ export default function App() {
 
 				{/* Botón Empezar */}
 				<button
-				onClick={() => navigate("/form")}
+					onClick={() => navigate('/form')}
 					type="button"
 					className="
-            mt-10 px-8 py-2 text-sm font-semibold text-black
-            rounded-md bg-[#ffd438]
-            shadow-lg shadow-black/40
-            transition-all duration-300 ease-out
-            hover:scale-105 hover:shadow-[0_6px_20px_rgba(255,212,56,0.6)]
-            active:scale-95
-          ">
+    mt-10 px-8 py-2 text-sm font-semibold text-black
+    rounded-md
+    shadow-lg shadow-black/40
+    transition-all duration-300 ease-out
+    hover:scale-105 hover:shadow-[0_6px_20px_rgba(247,208,138,0.6)]
+    active:scale-95
+  "
+					style={{
+						background:
+							'linear-gradient(90deg, #b8860b 0%, #f7d08a 50%, #b8860b 100%)',
+						color: '#000',
+					}}>
 					Empezar
 				</button>
 

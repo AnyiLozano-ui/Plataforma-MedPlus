@@ -7,13 +7,12 @@ export default function FormPage() {
 	const [formData, setFormData] = useState({
 		fullName: '',
 		email: '',
-		q1_stars: 0, // Pregunta 1 – satisfacción general (1 a 5)
-		q2_option: '', // Pregunta 2 – elemento que aportó más valor
-		q3_option: '', // Pregunta 3 – mismo estilo, otra pregunta
-		q4_option: '', // Pregunta 4 – mejor impresión
+		q1_stars: 0,
+		q2_option: '',
+		q3_option: '',
+		q4_option: '',
 	})
 
-	// ⭐ CAMBIO: ahora el máximo es 7 (la pantalla final)
 	const nextStep = () => setStep((s) => Math.min(s + 1, 7))
 
 	const handleChange = (e) => {
@@ -44,7 +43,7 @@ export default function FormPage() {
 				'https://medplus-survey-results-api.eml.com.co/api/survey-results',
 				body
 			)
-			if(res.data.data){
+			if (res.data.data) {
 				setStep(7)
 			}
 		} catch (error) {
@@ -78,6 +77,22 @@ export default function FormPage() {
 			<div className="nc-plane nc-plane-top" />
 			<div className="nc-middle" />
 
+			{/* HEADER NEGRO + FRANJA AMARILLA — SOLO MOSTRAR EN STEPS 0–6 */}
+			{step !== 7 && (
+				<header className="w-full bg-black">
+					<div className="max-w-6xl mx-auto h-24 px-6 flex items-center justify-between">
+						<img
+							src="/images/logoem.png"
+							alt="TNC Encuesta"
+							className="h-14 w-auto object-contain cursor-pointer"
+							onClick={() => (window.location.href = '/')}
+						/>
+					</div>
+
+					<div className="w-full h-[10px] bg-[#ffd438]" />
+				</header>
+			)}
+
 			<div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4">
 				<div key={step} className="question-container">
 					{/* STEP 0 – INTRO */}
@@ -96,24 +111,26 @@ export default function FormPage() {
 								type="button"
 								onClick={nextStep}
 								className="
-        mt-8
-        inline-flex items-center justify-center
-        rounded-md bg-[#ffd438] px-8 py-2 text-sm font-semibold text-black
-        shadow-lg shadow-black/40
-        transition-all duration-300 ease-out
-        hover:scale-105 hover:shadow-[0_6px_20px_rgba(255,212,56,0.6)]
-        active:scale-95
-      ">
+									mt-8 inline-flex items-center justify-center
+									rounded-md px-8 py-2 text-sm font-semibold text-black
+									shadow-lg shadow-black/40
+									transition-all duration-300 ease-out
+									hover:scale-105 hover:shadow-[0_6px_20px_rgba(247,208,138,0.6)]
+									active:scale-95
+								"
+								style={{
+									background:
+										'linear-gradient(90deg, #b8860b 0%, #f7d08a 50%, #b8860b 100%)',
+								}}>
 								Continuar
 							</button>
 						</div>
 					)}
 
 					{/* STEPS 1–6 */}
-					{/* ⭐ CAMBIO: el form solo se muestra hasta el step 6 */}
 					{step > 0 && step <= 6 && (
 						<form onSubmit={handleSubmit} className="space-y-8">
-							{/* STEP 1 – NOMBRE (sin numerito de pregunta) */}
+							{/* STEP 1 */}
 							{step === 1 && (
 								<>
 									<p className="question-label">
@@ -139,14 +156,23 @@ export default function FormPage() {
 												!canContinue()
 													? 'btn-disabled'
 													: ''
-											}`}>
+											}`}
+											style={
+												!canContinue()
+													? {}
+													: {
+															background:
+																'linear-gradient(90deg, #b8860b 0%, #f7d08a 50%, #b8860b 100%)',
+															color: '#000',
+													  }
+											}>
 											Aceptar
 										</button>
 									</div>
 								</>
 							)}
 
-							{/* STEP 2 – CORREO (sin numerito de pregunta) */}
+							{/* STEP 2 */}
 							{step === 2 && (
 								<>
 									<p className="question-label">
@@ -172,14 +198,23 @@ export default function FormPage() {
 												!canContinue()
 													? 'btn-disabled'
 													: ''
-											}`}>
+											}`}
+											style={
+												!canContinue()
+													? {}
+													: {
+															background:
+																'linear-gradient(90deg, #b8860b 0%, #f7d08a 50%, #b8860b 100%)',
+															color: '#000',
+													  }
+											}>
 											Aceptar
 										</button>
 									</div>
 								</>
 							)}
 
-							{/* STEP 3 – PREGUNTA 1 (ESTRELLAS) */}
+							{/* STEP 3 – ESTRELLAS */}
 							{step === 3 && (
 								<>
 									<p className="question-label">
@@ -192,11 +227,9 @@ export default function FormPage() {
 											1
 										</span>
 										En una escala del 1 al 5, ¿qué tan
-										satisfecho(a) quedaste con el Evento
-										Médico 2025 teniendo en cuenta aspectos
-										como organización, contenido, logística
-										y experiencia general?*
+										satisfecho(a) quedaste...*
 									</p>
+
 									<p className="question-help">
 										Siendo 1 muy malo y 5 muy bueno.
 									</p>
@@ -232,13 +265,22 @@ export default function FormPage() {
 										disabled={!canContinue()}
 										className={`primary-btn ${
 											!canContinue() ? 'btn-disabled' : ''
-										}`}>
+										}`}
+										style={
+											!canContinue()
+												? {}
+												: {
+														background:
+															'linear-gradient(90deg, #b8860b 0%, #f7d08a 50%, #b8860b 100%)',
+														color: '#000',
+												  }
+										}>
 										Aceptar
 									</button>
 								</>
 							)}
 
-							{/* STEP 4 – PREGUNTA 2 */}
+							{/* STEP 4 */}
 							{step === 4 && (
 								<>
 									<p className="question-label">
@@ -246,7 +288,7 @@ export default function FormPage() {
 											2
 										</span>
 										¿Qué elemento aportó más valor a tu
-										experiencia?*
+										experiencia?
 									</p>
 
 									<div className="choice-group choice-group--compact">
@@ -300,7 +342,16 @@ export default function FormPage() {
 										disabled={!canContinue()}
 										className={`primary-btn ${
 											!canContinue() ? 'btn-disabled' : ''
-										}`}>
+										}`}
+										style={
+											!canContinue()
+												? {}
+												: {
+														background:
+															'linear-gradient(90deg, #b8860b 0%, #f7d08a 50%, #b8860b 100%)',
+														color: '#000',
+												  }
+										}>
 										Enviar
 									</button>
 								</>
@@ -308,10 +359,9 @@ export default function FormPage() {
 						</form>
 					)}
 
-					{/* ⭐ NUEVO: STEP 7 – PANTALLA DE MUCHAS GRACIAS */}
+					{/* ⭐ NUEVO: STEP 7 – PANTALLA “GRACIAS” */}
 					{step === 7 && (
 						<div className="flex flex-col items-center text-center gap-8">
-							{/* Logo grande (usa el mismo que en la landing) */}
 							<img
 								src="/images/logoem.png"
 								alt="Nariño Challenge 2025"
@@ -322,10 +372,10 @@ export default function FormPage() {
 								<p className="text-2xl sm:text-3xl font-semibold text-white">
 									Muchas gracias!
 								</p>
-								<p className="text-sm sm:text-2xl  text-slate-300">
+								<p className="text-sm sm:text-2xl text-slate-300">
 									¡Gracias por compartirnos tu experiencia,
-									ahora accede a las memorias de nuestro
-									evento médico MedPlus 2025!
+									ahora accede a las memorias del evento
+									médico MedPlus 2025!
 								</p>
 							</div>
 
@@ -335,13 +385,17 @@ export default function FormPage() {
 									(window.location.href = '/gallery')
 								}
 								className="
-									mt-2 rounded-md bg-[#ffd438] px-8 py-2
-									text-sm font-semibold text-black
-									shadow-lg shadow-black/40
-									transition-all duration-300 ease-out
-									hover:scale-105 hover:shadow-[0_6px_20px_rgba(255,212,56,0.6)]
-									active:scale-95
-								">
+        mt-2 rounded-md px-8 py-2
+        text-sm font-semibold text-black
+        shadow-lg shadow-black/40
+        transition-all duration-300 ease-out
+        hover:scale-105 hover:shadow-[0_6px_20px_rgba(247,208,138,0.6)]
+        active:scale-95
+    "
+								style={{
+									background:
+										'linear-gradient(90deg, #b8860b 0%, #f7d08a 50%, #b8860b 100%)',
+								}}>
 								VER GALERIA!
 							</button>
 						</div>

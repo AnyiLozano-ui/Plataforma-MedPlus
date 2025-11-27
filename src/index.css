@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+/* QUITA el scroll vertical causado por el header */
+.nc-bg > header + .relative.z-10.flex.min-h-screen {
+  min-height: calc(100vh - 106px); /* 96px header + 10px franja amarilla */
+}
+
+/* Evita scroll horizontal por los planos animados */
+.nc-bg {
+  overflow-x: hidden;
+}
+
 html,
 body,
 #root {
@@ -36,7 +46,7 @@ body {
 	height: 110%;
 	background-image: radial-gradient(
 		circle,
-		rgba(255, 255, 255, 0.55) 1.2px,
+		rgba(248, 220, 130, 0.9) 1.2px,
 		transparent 1.2px
 	);
 	background-size: 26px 26px;
@@ -111,10 +121,11 @@ body {
 	right: 0;
 	top: 28%;
 	bottom: 28%;
-	background-color: #000;
+	background-color: #000000;
+	/* 🔥 antes era blanco: rgba(255, 255, 255, 0.24) */
 	background-image: radial-gradient(
 		circle,
-		rgba(255, 255, 255, 0.24) 1.1px,
+		rgba(248, 220, 130, 0.7) 1.1px,   /* dorado más suave */
 		transparent 1.1px
 	);
 	background-size: 30px 30px;
@@ -226,11 +237,9 @@ body {
     color: #111827;
     font-size: 0.7rem;
     font-weight: 600;
-
-    /* FIXES IMPORTANTES */
-    margin: 0 0.5rem 0 0;       /* quita el % */
-    vertical-align: middle;     /* evita que suba/baje */
-    flex-shrink: 0;             /* evita que afecte el layout */
+    margin: 0 0.5rem 0 0;
+    vertical-align: middle;
+    flex-shrink: 0;
 }
 
 .question-help {
@@ -431,7 +440,7 @@ body {
 /* Variante compacta de la fila (menos padding que las grandes) */
 .choice-row--compact {
 	padding: 0.7rem 1rem;
-	border-radius: 0.6rem; /* menos pill, más “tarjeta” */
+	border-radius: 0.6rem;
 	background: rgba(0, 0, 0, 0.75);
 	border-color: rgba(107, 114, 128, 0.8);
 }
@@ -448,26 +457,24 @@ body {
 /* Intro igual al diseño de referencia */
 
 .intro-block {
-	max-width: 780px; /* ancho de la columna de texto */
+	max-width: 780px;
 	margin-left: 1.5rem;
 	margin-right: 1.5rem;
 }
 
 @media (min-width: 1024px) {
 	.intro-block {
-		margin-left: 7rem; /* lo “corremos” un poco a la derecha en desktop */
+		margin-left: 7rem;
 	}
 }
 
 .intro-text {
 	color: #f9fafb;
 	font-weight: 400;
-	/* tamaño parecido al de la imagen */
 	font-size: clamp(1.2rem, 1.2vw + 1rem, 1.7rem);
 	line-height: 1.5;
 }
 
-/* comilla amarilla grande, en su propia línea */
 .intro-quote-mark {
 	display: block;
 	font-size: clamp(2.5rem, 3vw + 1rem, 3.5rem);
