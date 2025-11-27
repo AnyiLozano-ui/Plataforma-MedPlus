@@ -1,3 +1,4 @@
+import axios from 'axios'
 import React, { useState } from 'react'
 
 export default function FormPage() {
@@ -27,11 +28,28 @@ export default function FormPage() {
 		setFormData((prev) => ({ ...prev, q1_stars: value }))
 	}
 
-	const handleSubmit = (e) => {
-		e.preventDefault()
-		console.log('FORM DATA =>', formData)
-		// ⭐ CAMBIO: quitamos alert y pasamos al paso 7 (pantalla de gracias)
-		setStep(7)
+	const handleSubmit = async (e) => {
+		try {
+			e.preventDefault()
+			console.log('FORM DATA =>', formData)
+			const body = {
+				name: formData.fullName,
+				email: formData.email,
+				satisfactory_logistic: formData.q1_stars,
+				better_value_experience: formData.q2_option,
+				better_value_experience_question_4: 'A',
+				impressions: 'A',
+			}
+			const res = await axios.post(
+				'https://medplus-survey-results-api.eml.com.co/api/survey-results',
+				body
+			)
+			if(res.data.data){
+				setStep(7)
+			}
+		} catch (error) {
+			console.log(error)
+		}
 	}
 
 	const canContinue = () => {
@@ -66,11 +84,9 @@ export default function FormPage() {
 					{step === 0 && (
 						<div className="intro-block text-left">
 							<p className="intro-text">
-								“ Tu opinión es importante para nosotros. Por eso,
-								te pedimos{' '}
-								<span className="font-semibold">
-									5 minutos
-								</span>{' '}
+								“ Tu opinión es importante para nosotros. Por
+								eso, te pedimos{' '}
+								<span className="font-semibold">5 minutos</span>{' '}
 								de tu tiempo para darnos{' '}
 								<span className="font-semibold">Feedback</span>{' '}
 								y mejorar en futuras oportunidades…
@@ -167,7 +183,12 @@ export default function FormPage() {
 							{step === 3 && (
 								<>
 									<p className="question-label">
-										<span className="question-number" style={{width: "30px", height: "30px" }}>
+										<span
+											className="question-number"
+											style={{
+												width: '30px',
+												height: '30px',
+											}}>
 											1
 										</span>
 										En una escala del 1 al 5, ¿qué tan
@@ -255,7 +276,7 @@ export default function FormPage() {
 												key={opt.key}
 												className={`choice-row choice-row--compact ${
 													formData.q2_option ===
-													opt.label
+													opt.key
 														? 'choice-row--active'
 														: ''
 												}`}>
@@ -265,7 +286,7 @@ export default function FormPage() {
 												<input
 													type="radio"
 													name="q2_option"
-													value={opt.label}
+													value={opt.key}
 													onChange={handleChange}
 													className="hidden"
 												/>
@@ -274,145 +295,6 @@ export default function FormPage() {
 										))}
 									</div>
 
-									<button
-										type="button"
-										onClick={nextStep}
-										disabled={!canContinue()}
-										className={`primary-btn ${
-											!canContinue() ? 'btn-disabled' : ''
-										}`}>
-										Aceptar
-									</button>
-								</>
-							)}
-
-							{/* STEP 5 – PREGUNTA 3 (misma estructura que la 2) */}
-							{step === 5 && (
-								<>
-									<p className="question-label">
-										<span className="question-number">
-											3
-										</span>
-										¿Qué elemento aportó más valor a tu
-										experiencia?*
-									</p>
-
-									<div className="choice-group choice-group--compact">
-										{[
-											{
-												key: 'A',
-												label: 'Atención personalizada',
-											},
-											{
-												key: 'B',
-												label: 'Cercanía con el equipo MedPlus',
-											},
-											{
-												key: 'C',
-												label: 'Calidad del espectáculo',
-											},
-											{
-												key: 'D',
-												label: 'Orden y puntualidad',
-											},
-											{
-												key: 'E',
-												label: 'Comodidad en el lugar',
-											},
-										].map((opt) => (
-											<label
-												key={opt.key}
-												className={`choice-row choice-row--compact ${
-													formData.q3_option ===
-													opt.label
-														? 'choice-row--active'
-														: ''
-												}`}>
-												<span className="choice-badge choice-badge--square">
-													{opt.key}
-												</span>
-												<input
-													type="radio"
-													name="q3_option"
-													value={opt.label}
-													onChange={handleChange}
-													className="hidden"
-												/>
-												<span>{opt.label}</span>
-											</label>
-										))}
-									</div>
-
-									<button
-										type="button"
-										onClick={nextStep}
-										disabled={!canContinue()}
-										className={`primary-btn ${
-											!canContinue() ? 'btn-disabled' : ''
-										}`}>
-										Aceptar
-									</button>
-								</>
-							)}
-
-							{/* STEP 6 – PREGUNTA 4 */}
-							{step === 6 && (
-								<>
-									<p className="question-label">
-										<span className="question-number">
-											4
-										</span>
-										¿Qué te dejó la mejor impresión del
-										evento?*
-									</p>
-
-									<div className="choice-group choice-group--compact">
-										{[
-											{
-												key: 'A',
-												label: 'El trato del personal',
-											},
-											{
-												key: 'B',
-												label: 'La producción del evento',
-											},
-											{
-												key: 'C',
-												label: 'La experiencia en conjunto',
-											},
-											{
-												key: 'D',
-												label: 'La exclusividad de la invitación',
-											},
-											{
-												key: 'E',
-												label: 'La calidad del entretenimiento',
-											},
-										].map((opt) => (
-											<label
-												key={opt.key}
-												className={`choice-row choice-row--compact ${
-													formData.q4_option ===
-													opt.label
-														? 'choice-row--active'
-														: ''
-												}`}>
-												<span className="choice-badge choice-badge--square">
-													{opt.key}
-												</span>
-												<input
-													type="radio"
-													name="q4_option"
-													value={opt.label}
-													onChange={handleChange}
-													className="hidden"
-												/>
-												<span>{opt.label}</span>
-											</label>
-										))}
-									</div>
-
-									{/* Último paso: enviamos el formulario */}
 									<button
 										type="submit"
 										disabled={!canContinue()}
@@ -440,15 +322,17 @@ export default function FormPage() {
 								<p className="text-2xl sm:text-3xl font-semibold text-white">
 									Muchas gracias!
 								</p>
-								<p className="text-sm sm:text-base text-slate-300">
-									Tu opinión es muy importante para nosotros.
+								<p className="text-sm sm:text-2xl  text-slate-300">
+									¡Gracias por compartirnos tu experiencia,
+									ahora accede a las memorias de nuestro
+									evento médico MedPlus 2025!
 								</p>
 							</div>
 
 							<button
 								type="button"
 								onClick={() =>
-									window.location.href="/gallery"
+									(window.location.href = '/gallery')
 								}
 								className="
 									mt-2 rounded-md bg-[#ffd438] px-8 py-2

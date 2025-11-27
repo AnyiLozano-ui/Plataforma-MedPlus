@@ -37,7 +37,7 @@ export default function App() {
 				{/* Texto “Dura 2 minutos” */}
 				<p className="mt-2 flex items-center gap-2 text-xs text-slate-200 text-animate">
 					<span className="inline-block h-2 w-2 rounded-full border border-slate-300" />
-					Dura 2 minutos
+					Dura 5 minutos
 				</p>
 			</div>
 		</div>
