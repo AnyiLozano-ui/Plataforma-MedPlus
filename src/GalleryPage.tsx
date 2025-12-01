@@ -21,6 +21,7 @@ export default function GalleryPage() {
 	const [cityFilter, setCityFilter] = useState<string>('Todos')
 
 	const [openImage, setOpenImage] = useState<string | null>(null)
+	const [openType, setOpenType] = useState<'image' | 'video' | null>(null)
 
 	// ---------------------------------------
 	// 🔽 FUNCIÓN DE DESCARGA PARA EL MODAL
@@ -93,22 +94,34 @@ export default function GalleryPage() {
 		<div className="nc-bg">
 
 			{/* ======================================================
-			     🔥 MODAL DE IMAGEN + BOTÓN DOWNLOAD
+			     🔥 MODAL DE IMAGEN / VIDEO + BOTÓN DOWNLOAD
 			====================================================== */}
 			{openImage && (
 				<div
 					className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-[9999]"
-					onClick={() => setOpenImage(null)}
+					onClick={() => {
+						setOpenImage(null)
+						setOpenType(null)
+					}}
 				>
 					<div
 						className="relative max-w-3xl max-h-[90vh] flex flex-col items-center"
 						onClick={(e) => e.stopPropagation()}
 					>
-						<img
-							src={openImage}
-							alt="Imagen ampliada"
-							className="rounded-lg max-h-[80vh] object-contain shadow-lg"
-						/>
+						{/* Si es video, mostramos video; si no, imagen */}
+						{openType === 'video' ? (
+							<video
+								src={openImage}
+								controls
+								className="rounded-lg max-h-[80vh] object-contain shadow-lg"
+							/>
+						) : (
+							<img
+								src={openImage}
+								alt="Imagen ampliada"
+								className="rounded-lg max-h-[80vh] object-contain shadow-lg"
+							/>
+						)}
 
 						{/* Botón cerrar */}
 						<button
@@ -117,7 +130,10 @@ export default function GalleryPage() {
 								bg-white/90 text-black font-semibold 
 								shadow hover:bg-white
 							"
-							onClick={() => setOpenImage(null)}
+							onClick={() => {
+								setOpenImage(null)
+								setOpenType(null)
+							}}
 						>
 							X
 						</button>
@@ -270,7 +286,7 @@ export default function GalleryPage() {
 										</button>
 									</div>
 
-									{/* BOTÓN VER IMAGEN */}
+									{/* BOTÓN VER IMAGEN / VIDEO */}
 									<button
 										type="button"
 										className="
@@ -287,10 +303,18 @@ export default function GalleryPage() {
 											color: '#000',
 											border: '1px solid #b8860b',
 										}}
-										onClick={() => setOpenImage(item.src)}
+										onClick={() => {
+											setOpenImage(item.src)
+											// guardamos también el tipo para el modal
+											setOpenType(
+												item.type === 'video'
+													? 'video'
+													: 'image'
+											)
+										}}
 									>
-										Ver Imagen
-									</button>  
+										Ver {item.type === 'video' ? 'Video' : 'Imagen'}
+									</button>
 								</div>
 							))}
 						</div>
