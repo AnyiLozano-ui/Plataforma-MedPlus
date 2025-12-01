@@ -15,11 +15,12 @@ export default function FormPage() {
 
 	const nextStep = () => setStep((s) => Math.min(s + 1, 7))
 
+	// 🔹 AJUSTE: cuando el name es q1_stars, guardamos número
 	const handleChange = (e) => {
 		const { name, value } = e.target
 		setFormData((prev) => ({
 			...prev,
-			[name]: value,
+			[name]: name === 'q1_stars' ? Number(value) : value,
 		}))
 	}
 
@@ -58,7 +59,7 @@ export default function FormPage() {
 			case 2:
 				return formData.email.trim().length > 5
 			case 3:
-				return formData.q1_stars > 0
+				return formData.q1_stars > 0 // ✅ ahora sí se llena en el step 3
 			case 4:
 				return !!formData.q2_option
 			case 5:
@@ -214,7 +215,7 @@ export default function FormPage() {
 								</>
 							)}
 
-							{/* STEP 3 – ESTRELLAS */}
+							{/* STEP 3 – OPCIONES 2–2–1 */}
 							{step === 3 && (
 								<>
 									<p className="question-label">
@@ -227,36 +228,130 @@ export default function FormPage() {
 											1
 										</span>
 										En una escala del 1 al 5, ¿qué tan
-										satisfecho(a) quedaste...*
+										satisfecho(a) quedaste con el Evento
+										Médico 2025 teniendo en cuenta
+										organización, contenido, logística y
+										experiencia general?
 									</p>
 
-									<p className="question-help">
-										Siendo 1 muy malo y 5 muy bueno.
-									</p>
+									{/* GRID 2 - 2 - 1 */}
+									<div
+										className="options-grid"
+										style={{
+											display: 'grid',
+											gridTemplateColumns:
+												'repeat(2, 1fr)',
+											gap: '14px',
+											maxWidth: '520px',
+											margin: 'clamp(16px, 3vh, 40px) auto 0',
+										}}>
+										{/* 1 */}
+										<label
+											className={`choice-row choice-row--compact ${
+												formData.q1_stars === 1
+													? 'choice-row--active'
+													: ''
+											}`}>
+											<span className="choice-badge choice-badge--square">
+												1
+											</span>
+											<input
+												type="radio"
+												name="q1_stars"
+												value="1"
+												onChange={handleChange}
+												className="hidden"
+											/>
+											<span>Muy Insatisfecho</span>
+										</label>
 
-									<div className="rating-row">
-										{[1, 2, 3, 4, 5].map((star) => (
-											<div
-												key={star}
-												className="rating-item">
-												<button
-													type="button"
-													onClick={() =>
-														handleStarClick(star)
-													}
-													className={`star-btn ${
-														formData.q1_stars >=
-														star
-															? 'star-btn--active'
-															: ''
-													}`}>
-													★
-												</button>
-												<span className="rating-label">
-													{star}
+										{/* 2 */}
+										<label
+											className={`choice-row choice-row--compact ${
+												formData.q1_stars === 2
+													? 'choice-row--active'
+													: ''
+											}`}>
+											<span className="choice-badge choice-badge--square">
+												2
+											</span>
+											<input
+												type="radio"
+												name="q1_stars"
+												value="2"
+												onChange={handleChange}
+												className="hidden"
+											/>
+											<span>Insatisfecho</span>
+										</label>
+
+										{/* 3 */}
+										<label
+											className={`choice-row choice-row--compact ${
+												formData.q1_stars === 3
+													? 'choice-row--active'
+													: ''
+											}`}>
+											<span className="choice-badge choice-badge--square">
+												3
+											</span>
+											<input
+												type="radio"
+												name="q1_stars"
+												value="3"
+												onChange={handleChange}
+												className="hidden"
+											/>
+											<span>Neutral</span>
+										</label>
+
+										{/* 4 */}
+										<label
+											className={`choice-row choice-row--compact ${
+												formData.q1_stars === 4
+													? 'choice-row--active'
+													: ''
+											}`}>
+											<span className="choice-badge choice-badge--square">
+												4
+											</span>
+											<input
+												type="radio"
+												name="q1_stars"
+												value="4"
+												onChange={handleChange}
+												className="hidden"
+											/>
+											<span>Satisfecho</span>
+										</label>
+
+										{/* FILA 5 → UNA SOLA OPCIÓN CENTRADA */}
+										<div
+											style={{
+												gridColumn: '1 / span 2',
+												display: 'flex',
+												justifyContent: 'center',
+											}}>
+											<label
+												className={`choice-row choice-row--compact ${
+													formData.q1_stars === 5
+														? 'choice-row--active'
+														: ''
+												}`}
+												style={{ width: '60%' }}>
+												<span className="choice-badge choice-badge--square">
+													5
 												</span>
-											</div>
-										))}
+												<input
+													type="radio"
+													name="q1_stars"
+													value="5"
+													onChange={handleChange}
+													className="hidden"
+												/>
+												<span>Muy Satisfecho</span>
+											</label>
+										</div>
 									</div>
 
 									<button
