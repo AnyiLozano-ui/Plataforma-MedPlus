@@ -37,7 +37,7 @@ export default function FormPage() {
 				email: formData.email,
 				satisfactory_logistic: formData.q1_stars,
 				better_value_experience: formData.q2_option,
-				better_value_experience_question_4: 'A',
+				better_value_experience_question_4: formData.q3_option,
 				impressions: 'A',
 			}
 			const res = await axios.post(
@@ -341,7 +341,8 @@ export default function FormPage() {
 									</div>
 
 									<button
-										type="submit"
+										type="button"
+										onClick={nextStep}
 										disabled={!canContinue()}
 										className={`primary-btn ${
 											!canContinue() ? 'btn-disabled' : ''
@@ -355,10 +356,57 @@ export default function FormPage() {
 														color: '#000',
 												  }
 										}>
-										Enviar
+										Aceptar
 									</button>
 								</>
 							)}
+
+							{/* STEP 5 */}
+{step === 5 && (
+  <>
+    <p
+      className="question-label"
+      style={{ marginBottom: '0.75rem' }} // ↓ menos espacio bajo el título
+    >
+      ¿Qué nos recomendarías para futuros eventos?
+    </p>
+
+    <div
+      className="field-block"
+      style={{
+        marginTop: '0',       // ↓ quita espacio extra arriba del bloque
+        gap: '0.75rem',       // ↓ reduce el espacio entre textarea y botón
+      }}
+    >
+      <textarea
+        name="q3_option"
+        value={formData.q3_option}
+        onChange={handleChange}
+        placeholder=""
+        className="question-input"
+        rows={2}              // ↓ más compacto
+        autoFocus
+      />
+
+      <button
+        type="submit"
+        disabled={!canContinue()}
+        className={`primary-btn ${!canContinue() ? 'btn-disabled' : ''}`}
+        style={
+          !canContinue()
+            ? {}
+            : {
+                background:
+                  'linear-gradient(90deg, #b8860b 0%, #f7d08a 50%, #b8860b 100%)',
+                color: '#000',
+              }
+        }
+      >
+        Enviar
+      </button>
+    </div>
+  </>
+)}
 						</form>
 					)}
 
