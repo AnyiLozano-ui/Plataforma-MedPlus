@@ -482,3 +482,19 @@ body {
 	color: #ffd438;
 	margin-bottom: 0.75rem;
 }
+
+
+/* 🔧 iPhone / móviles: simplificar el fondo para que no crashee Safari */
+@media (max-width: 768px) {
+  /* Ocultamos los planos animados y el middle */
+  .nc-plane,
+  .nc-middle {
+    display: none !important;
+  }
+
+  /* Fondo simple para móvil */
+  .nc-bg {
+    background: url(/images/background.png);
+    min-height: 100vh;
+  }
+}
